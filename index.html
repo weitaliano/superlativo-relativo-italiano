@@ -425,7 +425,7 @@
     <header class="top">
       <div>
         <h1>Il migliore del gruppo</h1>
-        <p class="subtitle">Allenati con il <b>superlativo relativo</b> — livello avanzato (B1-B2). Forme irregolari, preposizioni articolate e congiuntivo.</p>
+        <p class="subtitle">Allenati con il <b>superlativo relativo</b>: scegli la frase giusta per ogni sfida.</p>
       </div>
       <button class="rule-toggle" id="ruleToggle" aria-expanded="false" aria-controls="ruleBox">Regola</button>
     </header>
@@ -438,7 +438,6 @@
         <li class="ex"><b>cattivo → il peggiore</b>; <i>peggio</i> è avverbio.</li>
         <li class="ex"><b>grande → il maggiore</b> (età/importanza, es. "il fratello maggiore").</li>
         <li class="ex"><b>piccolo → il minore</b> (età/importanza, es. "la sorella minore").</li>
-        <li class="ex">Dopo il superlativo relativo + <b>che</b>, si usa spesso il <b>congiuntivo</b>: "è il film più bello <b>che io abbia visto</b>".</li>
       </ul>
     </div>
 
@@ -568,17 +567,22 @@
       why:"«Le designer» è femminile plurale → <b>le più produttive</b>."
     },
     {
-      type:"complete",
-      icon:"🍝", label:"Congiuntivo", prompt:"Completa: Secondo Elena, «Da Mario» è il ristorante più buono...",
-      scenario:"«Secondo me, 'Da Mario' è il ristorante più buono ___.»",
+      type:"compare",
+      icon:"🍝", label:"Ristoranti", prompt:"Qual è il ristorante più buono della città?",
+      cast:[
+        {name:"Da Mario", emoji:"🍽️", val:6, unit:"pt"},
+        {name:"Trattoria Rosa", emoji:"🍽️", val:9, unit:"pt"},
+        {name:"Pizzeria Sole", emoji:"🍽️", val:7, unit:"pt"},
+      ],
+      winner:1,
       options:[
-        "...che io conosca.",
-        "...che io conosco.",
-        "...che io ho conosciuto.",
-        "...che io conoscerei.",
+        "La Trattoria Rosa è la migliore della città.",
+        "La Trattoria Rosa è il migliore della città.",
+        "La Trattoria Rosa è la più buona della città.",
+        "La Trattoria Rosa è le migliori della città.",
       ],
       correct:0,
-      why:"Dopo un superlativo relativo + <b>che</b>, quando esprimiamo un'opinione soggettiva, si usa il <b>congiuntivo presente</b>: «il più buono che io conosca»."
+      why:"«Trattoria» è femminile singolare e «buono» ha la forma irregolare <b>migliore</b> → <b>la migliore</b> (non «la più buona»)."
     },
     {
       type:"compare",
@@ -634,30 +638,57 @@
       why:"Plurale femminile di «migliore» → <b>le migliori</b> (forma invariata al femminile, ma plurale in -i). «Le più buone» non è corretto: buono → migliore."
     },
     {
-      type:"complete",
-      icon:"🎬", label:"Congiuntivo", prompt:"Completa: È il film più interessante...",
-      scenario:"«È il film più interessante ___ quest'anno.»",
+      type:"compare",
+      icon:"💰", label:"Stipendio", prompt:"Chi è la più pagata dell'ufficio?",
+      cast:[
+        {name:"Anna", emoji:"👩‍💼", val:2200, unit:"€"},
+        {name:"Elena", emoji:"👩‍💼", val:3100, unit:"€"},
+        {name:"Giulia", emoji:"👩‍💼", val:2700, unit:"€"},
+      ],
+      winner:1,
       options:[
-        "...che io abbia visto.",
-        "...che io ho visto.",
-        "...che io vedessi.",
-        "...che io veda.",
+        "Elena è la più pagata dell'ufficio.",
+        "Elena è il più pagato dell'ufficio.",
+        "Elena è le più pagate dell'ufficio.",
+        "Elena è la meno pagata dell'ufficio.",
       ],
       correct:0,
-      why:"Con un'azione già conclusa («quest'anno») dopo il superlativo relativo si usa il <b>congiuntivo passato</b>: «che io abbia visto», non il presente o l'imperfetto."
+      why:"Elena è femminile singolare → <b>la più pagata</b>."
     },
     {
-      type:"complete",
-      icon:"😩", label:"Congiuntivo + irregolare", prompt:"Completa: Marco è il collega peggiore...",
-      scenario:"«Marco è il collega peggiore ___ mai avuto.»",
+      type:"compare",
+      icon:"⚡", label:"Efficienza", prompt:"Chi è più efficiente, i venditori o le assistenti?",
+      cast:[
+        {name:"I venditori", emoji:"🧑‍💼🧑‍💼", val:72, unit:"%", group:true},
+        {name:"Le assistenti", emoji:"👩‍💼👩‍💼", val:88, unit:"%", group:true},
+      ],
+      winner:1,
       options:[
-        "...che io abbia mai avuto.",
-        "...che io ho mai avuto.",
-        "...che io abbia avuto mai.",
-        "...che io avessi mai avuto.",
+        "Le assistenti sono le più efficienti dell'ufficio.",
+        "Le assistenti sono i più efficienti dell'ufficio.",
+        "Le assistenti sono la più efficiente dell'ufficio.",
+        "Le assistenti sono le meno efficienti dell'ufficio.",
       ],
       correct:0,
-      why:"Superlativo + congiuntivo passato: <b>che io abbia mai avuto</b>. «Mai» va prima del participio, non dopo; il trapassato congiuntivo qui non è corretto."
+      why:"«Le assistenti» è femminile plurale → <b>le più efficienti</b> (efficiente diventa efficient<u>i</u> al plurale)."
+    },
+    {
+      type:"compare",
+      icon:"😊", label:"Simpatia", prompt:"Chi è il più simpatico dell'ufficio?",
+      cast:[
+        {name:"Marco", emoji:"🧑‍💼", val:6, unit:"❤️"},
+        {name:"Luca", emoji:"🧑‍💼", val:9, unit:"❤️"},
+        {name:"Diego", emoji:"🧑‍💼", val:7, unit:"❤️"},
+      ],
+      winner:1,
+      options:[
+        "Luca è il più simpatico dell'ufficio.",
+        "Luca è il più simpatica dell'ufficio.",
+        "Luca è i più simpatici dell'ufficio.",
+        "Luca è il meno simpatico dell'ufficio.",
+      ],
+      correct:0,
+      why:"Luca è maschile singolare → l'aggettivo finisce in <b>-o</b>: <b>il più simpatico</b>."
     },
   ];
 
