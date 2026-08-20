@@ -726,6 +726,18 @@
     return Math.max(...round.cast.map(c => c.val));
   }
 
+  function shuffledIndices(n){
+    const arr = Array.from({length: n}, (_, i) => i);
+    for (let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  let displayOptions = [];
+  let displayCorrect = 0;
+
   function render(){
     if (current >= ROUNDS.length){
       renderEnd();
@@ -734,6 +746,10 @@
     const r = ROUNDS[current];
     qNow.textContent = current + 1;
     buildProgress();
+
+    const order = shuffledIndices(r.options.length);
+    displayOptions = order.map(i => r.options[i]);
+    displayCorrect = order.indexOf(r.correct);
 
     let middleHtml;
     if (r.type === "complete"){
@@ -752,7 +768,7 @@
       middleHtml = `<div class="cast">${castHtml}</div>`;
     }
 
-    const optsHtml = r.options.map((opt, i) => {
+    const optsHtml = displayOptions.map((opt, i) => {
       return `<button class="opt" data-idx="${i}">
         <span class="letter">${letters[i]}</span>
         <span>${opt}</span>
@@ -784,15 +800,15 @@
     const opts = document.querySelectorAll(".opt");
     opts.forEach(o => o.disabled = true);
 
-    const correct = idx === round.correct;
+    const correct = idx === displayCorrect;
     results[current] = correct;
 
-    opts[round.correct].classList.add("correct");
+    opts[displayCorrect].classList.add("correct");
     if (!correct){
       opts[idx].classList.add("wrong");
     }
     opts.forEach((o, i) => {
-      if (i !== round.correct && i !== idx) o.classList.add("dim");
+      if (i !== displayCorrect && i !== idx) o.classList.add("dim");
     });
 
     // highlight winner card (only for "compare" rounds)
