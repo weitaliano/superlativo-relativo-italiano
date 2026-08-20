@@ -1,0 +1,840 @@
+<title>Il Migliore Del Gruppo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f4ee;
+    --sheet:#fbfaf5;
+    --grid:#cfdde8;
+    --margin:#d8665f;
+    --ink:#26314a;
+    --ink-soft:#5b6580;
+    --ink-faint:#8b93a8;
+    --accent:#d99a2b;
+    --accent-soft:#f4e2b8;
+    --good:#3d8a5c;
+    --good-soft:#dcefe1;
+    --bad:#c1483f;
+    --bad-soft:#f6dedb;
+    --card-shadow: 0 1px 0 rgba(38,49,74,0.06), 0 8px 24px -12px rgba(38,49,74,0.18);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#101d19;
+      --sheet:#132520;
+      --grid:rgba(230,240,235,0.09);
+      --margin:#d98079;
+      --ink:#eef1ea;
+      --ink-soft:#b7c2ba;
+      --ink-faint:#7d8c83;
+      --accent:#f0c04e;
+      --accent-soft:#3a3220;
+      --good:#7fca9a;
+      --good-soft:#1c3a2b;
+      --bad:#ec9088;
+      --bad-soft:#3d2320;
+      --card-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 10px 30px -14px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#101d19;
+    --sheet:#132520;
+    --grid:rgba(230,240,235,0.09);
+    --margin:#d98079;
+    --ink:#eef1ea;
+    --ink-soft:#b7c2ba;
+    --ink-faint:#7d8c83;
+    --accent:#f0c04e;
+    --accent-soft:#3a3220;
+    --good:#7fca9a;
+    --good-soft:#1c3a2b;
+    --bad:#ec9088;
+    --bad-soft:#3d2320;
+    --card-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 10px 30px -14px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Nunito', system-ui, -apple-system, sans-serif;
+    min-height:100vh;
+    padding:32px 16px 64px;
+    display:flex;
+    justify-content:center;
+  }
+  .page{ width:100%; max-width:760px; }
+
+  .sheet{
+    position:relative;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 37px,
+        var(--grid) 37px 38px
+      ),
+      var(--sheet);
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+    padding: 34px 30px 30px 58px;
+    overflow:hidden;
+    border:1px solid rgba(120,120,120,0.08);
+  }
+  .sheet::before{
+    content:"";
+    position:absolute;
+    top:0; bottom:0; left:34px;
+    width:2px;
+    background:var(--margin);
+    opacity:0.55;
+  }
+
+  header.top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:2.6rem;
+    line-height:1;
+    margin:0 0 2px;
+    color:var(--ink);
+    text-wrap:balance;
+  }
+  .subtitle{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:46ch;
+  }
+  .subtitle b{ color:var(--ink); }
+
+  .rule-toggle{
+    flex:none;
+    border:1.5px solid var(--ink-faint);
+    background:transparent;
+    color:var(--ink-soft);
+    font-family:'Nunito',sans-serif;
+    font-weight:700;
+    font-size:0.78rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background 0.15s, color 0.15s, border-color .15s;
+  }
+  .rule-toggle:hover{ border-color:var(--accent); color:var(--ink); }
+  .rule-toggle:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .rule-box{
+    margin:14px 0 10px;
+    background:var(--accent-soft);
+    border:1px dashed var(--accent);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:0.88rem;
+    color:var(--ink);
+    display:none;
+  }
+  .rule-box.open{ display:block; }
+  .rule-box .formula{
+    font-family:'Caveat',cursive;
+    font-size:1.35rem;
+    font-weight:600;
+    margin:2px 0 8px;
+  }
+  .rule-box ul{ margin:6px 0 0; padding-left:20px; }
+  .rule-box li{ margin:3px 0; }
+  .rule-box .ex{ color:var(--ink-soft); }
+
+  .statusbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin:18px 0 22px;
+  }
+  .progress{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .dot{
+    width:11px; height:11px; border-radius:50%;
+    background:var(--grid);
+    border:1.5px solid var(--ink-faint);
+    opacity:0.55;
+  }
+  .dot.done-good{ background:var(--good); border-color:var(--good); opacity:1; }
+  .dot.done-bad{ background:var(--bad); border-color:var(--bad); opacity:1; }
+  .dot.current{ border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); opacity:1; }
+
+  .score{
+    font-family:'Caveat', cursive;
+    font-size:1.5rem;
+    font-weight:700;
+    color:var(--ink);
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+    white-space:nowrap;
+  }
+  .score .n{ color:var(--good); }
+  .streak{
+    font-family:'Nunito',sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border-radius:999px;
+    padding:3px 10px;
+  }
+
+  .category{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .category .icon{
+    font-size:1.5rem;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--accent-soft);
+    border-radius:10px;
+    flex:none;
+  }
+  .category .label{
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-weight:800;
+    color:var(--ink-soft);
+  }
+  .category .prompt{
+    font-family:'Caveat', cursive;
+    font-size:1.7rem;
+    font-weight:600;
+    color:var(--ink);
+    margin-top:1px;
+  }
+
+  .cast{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .character{
+    background:var(--bg);
+    border:1.5px solid rgba(120,120,120,0.14);
+    border-radius:12px;
+    padding:14px 12px;
+    text-align:center;
+    transition:transform .15s, border-color .15s;
+  }
+  .character .avatar{
+    font-size:2.1rem;
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .character .name{
+    font-weight:800;
+    font-size:0.92rem;
+    color:var(--ink);
+  }
+  .character .statval{
+    font-variant-numeric:tabular-nums;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    margin:4px 0 8px;
+  }
+  .character .bar-track{
+    height:6px;
+    background:var(--grid);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .character .bar-fill{
+    height:100%;
+    background:var(--accent);
+    border-radius:999px;
+    transition:width .5s ease;
+  }
+  .character.winner{ border-color:var(--good); background:var(--good-soft); }
+  .character.winner .bar-fill{ background:var(--good); }
+
+  .scenario{
+    background:var(--bg);
+    border:1.5px solid rgba(120,120,120,0.16);
+    border-left:3px solid var(--accent);
+    border-radius:10px;
+    padding:16px 18px;
+    font-family:'Caveat', cursive;
+    font-size:1.45rem;
+    line-height:1.35;
+    color:var(--ink);
+    margin-bottom:20px;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    margin-bottom:8px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-align:left;
+    width:100%;
+    background:var(--bg);
+    border:1.5px solid rgba(120,120,120,0.16);
+    border-radius:10px;
+    padding:11px 14px;
+    font-family:'Nunito', sans-serif;
+    font-size:0.96rem;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .12s, background .12s, transform .06s;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); }
+  .opt:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .opt:active:not(:disabled){ transform:scale(0.997); }
+  .opt .letter{
+    flex:none;
+    width:24px; height:24px;
+    border-radius:50%;
+    border:1.5px solid var(--ink-faint);
+    font-size:0.72rem;
+    font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink-soft);
+  }
+  .opt:disabled{ cursor:default; }
+  .opt.correct{ border-color:var(--good); background:var(--good-soft); }
+  .opt.correct .letter{ border-color:var(--good); background:var(--good); color:#fff; }
+  .opt.wrong{ border-color:var(--bad); background:var(--bad-soft); }
+  .opt.wrong .letter{ border-color:var(--bad); background:var(--bad); color:#fff; }
+  .opt.dim{ opacity:0.5; }
+
+  .feedback{
+    margin-top:14px;
+    padding:13px 15px;
+    border-radius:10px;
+    font-size:0.9rem;
+    line-height:1.45;
+    display:none;
+    animation: pop .25s ease;
+  }
+  .feedback.show{ display:block; }
+  .feedback.good{ background:var(--good-soft); color:var(--ink); border:1px solid var(--good); }
+  .feedback.bad{ background:var(--bad-soft); color:var(--ink); border:1px solid var(--bad); }
+  .feedback .stamp{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:1.25rem;
+    margin-right:6px;
+  }
+  .feedback.good .stamp{ color:var(--good); }
+  .feedback.bad .stamp{ color:var(--bad); }
+  @keyframes pop{ from{ opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
+
+  .nextbar{
+    margin-top:16px;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .btn{
+    font-family:'Nunito', sans-serif;
+    font-weight:800;
+    font-size:0.9rem;
+    background:var(--ink);
+    color:var(--sheet);
+    border:none;
+    padding:11px 22px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:opacity .15s, transform .06s;
+  }
+  .btn:hover{ opacity:0.88; }
+  .btn:active{ transform:scale(0.98); }
+  .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .btn:disabled{ opacity:0.35; cursor:default; }
+
+  .end{
+    text-align:center;
+    padding:20px 8px 6px;
+  }
+  .end .stars{
+    font-size:2.2rem;
+    letter-spacing:4px;
+    margin-bottom:6px;
+  }
+  .end h2{
+    font-family:'Caveat', cursive;
+    font-size:2.4rem;
+    margin:0 0 4px;
+    font-weight:700;
+  }
+  .end p{
+    color:var(--ink-soft);
+    font-size:0.95rem;
+    max-width:44ch;
+    margin:0 auto 20px;
+  }
+  .end .tally{
+    font-family:'Caveat', cursive;
+    font-size:1.9rem;
+    font-weight:700;
+    margin-bottom:18px;
+  }
+  .end .tally .n{ color:var(--good); }
+
+  footer.note{
+    text-align:center;
+    font-size:0.76rem;
+    color:var(--ink-faint);
+    margin-top:18px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .feedback{ animation:none; }
+    .character .bar-fill{ transition:none; }
+  }
+
+  @media (max-width:480px){
+    .sheet{ padding:28px 18px 26px 42px; }
+    .sheet::before{ left:20px; }
+    h1{ font-size:2.1rem; }
+    .statusbar{ flex-wrap:wrap; }
+  }
+</style>
+
+<div class="page">
+  <div class="sheet">
+    <header class="top">
+      <div>
+        <h1>Il migliore del gruppo</h1>
+        <p class="subtitle">Allenati con il <b>superlativo relativo</b> — livello avanzato (B1-B2). Forme irregolari, preposizioni articolate e congiuntivo.</p>
+      </div>
+      <button class="rule-toggle" id="ruleToggle" aria-expanded="false" aria-controls="ruleBox">Regola</button>
+    </header>
+
+    <div class="rule-box" id="ruleBox">
+      <div class="formula">articolo + più/meno + aggettivo + di / tra + articolo</div>
+      <div>L'aggettivo si accorda con la persona o il gruppo di cui parliamo. Alcune forme sono irregolari:</div>
+      <ul>
+        <li class="ex"><b>buono → il migliore</b> (non "il più buono"); <i>meglio</i> è avverbio, non si usa qui.</li>
+        <li class="ex"><b>cattivo → il peggiore</b>; <i>peggio</i> è avverbio.</li>
+        <li class="ex"><b>grande → il maggiore</b> (età/importanza, es. "il fratello maggiore").</li>
+        <li class="ex"><b>piccolo → il minore</b> (età/importanza, es. "la sorella minore").</li>
+        <li class="ex">Dopo il superlativo relativo + <b>che</b>, si usa spesso il <b>congiuntivo</b>: "è il film più bello <b>che io abbia visto</b>".</li>
+      </ul>
+    </div>
+
+    <div class="statusbar">
+      <div class="progress" id="progress"></div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="streak" id="streak">serie: 0</span>
+        <span class="score">punti <span class="n" id="scoreN">0</span>/<span id="scoreTot">10</span></span>
+      </div>
+    </div>
+
+    <div id="game"></div>
+    <div id="endScreen" style="display:none;"></div>
+
+    <footer class="note">Domanda <span id="qNow">1</span> di <span id="qTotal">10</span> · Ufficio Rossi &amp; Colleghi</footer>
+  </div>
+</div>
+
+<script>
+(function(){
+  const ROUNDS = [
+    {
+      type:"compare",
+      icon:"💼", label:"Esperienza", prompt:"Chi è il più esperto dell'ufficio?",
+      cast:[
+        {name:"Marco", emoji:"🧑‍💼", val:3, unit:"anni"},
+        {name:"Davide", emoji:"🧑‍💼", val:12, unit:"anni"},
+        {name:"Luca", emoji:"🧑‍💼", val:7, unit:"anni"},
+      ],
+      winner:1,
+      options:[
+        "Davide è il più esperto dell'ufficio.",
+        "Davide è il migliore esperto dell'ufficio.",
+        "Davide è il più esperto dall'ufficio.",
+        "Davide è la più esperta dell'ufficio.",
+      ],
+      correct:0,
+      why:"«Esperto» è un aggettivo regolare (non serve «migliore») e la preposizione corretta è <b>di</b> → <b>dell'ufficio</b>, non «dall'ufficio»."
+    },
+    {
+      type:"compare",
+      icon:"🍷", label:"Vini (irregolare)", prompt:"Qual è il migliore vino della lista?",
+      cast:[
+        {name:"Chianti", emoji:"🍇", val:6, unit:"pt"},
+        {name:"Barolo", emoji:"🍇", val:9, unit:"pt"},
+        {name:"Prosecco", emoji:"🍇", val:7, unit:"pt"},
+      ],
+      winner:1,
+      options:[
+        "Il Barolo è il migliore della lista.",
+        "Il Barolo è il più buono della lista.",
+        "Il Barolo è la migliore della lista.",
+        "Il Barolo è il meglio della lista.",
+      ],
+      correct:0,
+      why:"«Buono» ha la forma irregolare <b>il migliore</b> (non «il più buono»). <i>Meglio</i> è un avverbio: si dice «canta meglio», non «è il meglio»."
+    },
+    {
+      type:"compare",
+      icon:"📉", label:"Progetti (irregolare)", prompt:"Qual è il progetto peggiore del trimestre?",
+      cast:[
+        {name:"Progetto Alfa", emoji:"📁", val:8, unit:"pt"},
+        {name:"Progetto Beta", emoji:"📁", val:3, unit:"pt"},
+        {name:"Progetto Gamma", emoji:"📁", val:6, unit:"pt"},
+      ],
+      winner:1, lower:true,
+      options:[
+        "Il progetto Beta è il peggiore del trimestre.",
+        "Il progetto Beta è il più cattivo del trimestre.",
+        "Il progetto Beta è la peggiore del trimestre.",
+        "Il progetto Beta è il peggio del trimestre.",
+      ],
+      correct:0,
+      why:"«Cattivo» ha la forma irregolare <b>il peggiore</b>. <i>Peggio</i> è un avverbio, non un aggettivo: non si può dire «è il peggio»."
+    },
+    {
+      type:"compare",
+      icon:"👨‍👩‍👧", label:"Famiglia (irregolare)", prompt:"Chi è il maggiore dei tre fratelli?",
+      cast:[
+        {name:"Anna", emoji:"👩", val:34, unit:"anni"},
+        {name:"Marco", emoji:"🧑", val:41, unit:"anni"},
+        {name:"Sara", emoji:"👩", val:29, unit:"anni"},
+      ],
+      winner:1,
+      options:[
+        "Marco è il maggiore dei tre fratelli.",
+        "Marco è la maggiore dei tre fratelli.",
+        "Marco è i maggiori dei tre fratelli.",
+        "Marco è il maggiore tra di tre fratelli.",
+      ],
+      correct:0,
+      why:"«Grande» in senso di età ha la forma irregolare <b>il maggiore</b> (l'eldest). Nota: si dice «tra i tre fratelli», non «tra di tre fratelli»."
+    },
+    {
+      type:"compare",
+      icon:"⏰", label:"Puntualità", prompt:"Chi è il meno puntuale del team?",
+      cast:[
+        {name:"Elena", emoji:"👩‍💼", val:2, unit:"min"},
+        {name:"Davide", emoji:"🧑‍💼", val:15, unit:"min"},
+        {name:"Giulia", emoji:"👩‍💼", val:5, unit:"min"},
+      ],
+      winner:1,
+      options:[
+        "Davide è il meno puntuale del team.",
+        "Davide è il più puntuale del team.",
+        "Davide è la meno puntuale del team.",
+        "Davide è meno il puntuale del team.",
+      ],
+      correct:0,
+      why:"Davide ha il ritardo medio più alto → è il <b>meno</b> puntuale (non il più). L'ordine corretto è «il meno puntuale», non «meno il puntuale»."
+    },
+    {
+      type:"compare",
+      icon:"📈", label:"Produttività", prompt:"Chi è più produttivo, gli sviluppatori o le designer?",
+      cast:[
+        {name:"Gli sviluppatori", emoji:"🧑‍💻🧑‍💻", val:82, unit:"%", group:true},
+        {name:"Le designer", emoji:"👩‍🎨👩‍🎨", val:91, unit:"%", group:true},
+      ],
+      winner:1,
+      options:[
+        "Le designer sono le più produttive dell'azienda.",
+        "Le designer sono i più produttivi dell'azienda.",
+        "Le designer sono la più produttiva dell'azienda.",
+        "Le designer sono le meno produttive dell'azienda.",
+      ],
+      correct:0,
+      why:"«Le designer» è femminile plurale → <b>le più produttive</b>."
+    },
+    {
+      type:"complete",
+      icon:"🍝", label:"Congiuntivo", prompt:"Completa: Secondo Elena, «Da Mario» è il ristorante più buono...",
+      scenario:"«Secondo me, 'Da Mario' è il ristorante più buono ___.»",
+      options:[
+        "...che io conosca.",
+        "...che io conosco.",
+        "...che io ho conosciuto.",
+        "...che io conoscerei.",
+      ],
+      correct:0,
+      why:"Dopo un superlativo relativo + <b>che</b>, quando esprimiamo un'opinione soggettiva, si usa il <b>congiuntivo presente</b>: «il più buono che io conosca»."
+    },
+    {
+      type:"compare",
+      icon:"🏙️", label:"Città", prompt:"Qual è la città più cara d'Italia (tra queste)?",
+      cast:[
+        {name:"Milano", emoji:"🏙️", val:9, unit:"pt"},
+        {name:"Roma", emoji:"🏛️", val:7, unit:"pt"},
+        {name:"Napoli", emoji:"🌋", val:5, unit:"pt"},
+      ],
+      winner:0,
+      options:[
+        "Milano è la più cara d'Italia.",
+        "Milano è il più caro d'Italia.",
+        "Milano è le più care d'Italia.",
+        "Milano è la meno cara d'Italia.",
+      ],
+      correct:0,
+      why:"«Città» è femminile singolare → <b>la più cara</b>. Nota la preposizione articolata: <i>di</i> + <i>Italia</i> = <b>d'Italia</b>."
+    },
+    {
+      type:"compare",
+      icon:"👶", label:"Famiglia (irregolare)", prompt:"Chi è la minore dei tre fratelli (vedi sopra)?",
+      cast:[
+        {name:"Anna", emoji:"👩", val:34, unit:"anni"},
+        {name:"Marco", emoji:"🧑", val:41, unit:"anni"},
+        {name:"Sara", emoji:"👩", val:29, unit:"anni"},
+      ],
+      winner:2, lower:true,
+      options:[
+        "Sara è la minore dei tre fratelli.",
+        "Sara è il minore dei tre fratelli.",
+        "Sara è le minori dei tre fratelli.",
+        "Sara è la minore di tre fratelli.",
+      ],
+      correct:0,
+      why:"«Piccolo» in senso di età ha la forma irregolare <b>la minore</b>. Attenzione alla preposizione articolata: <i>di</i> + <i>i</i> = <b>dei</b>, non semplicemente «di»."
+    },
+    {
+      type:"compare",
+      icon:"🎓", label:"Stage", prompt:"Chi sono i migliori del gruppo, i tirocinanti o le stagiste?",
+      cast:[
+        {name:"I tirocinanti", emoji:"🧑‍🎓🧑‍🎓", val:6, unit:"pt", group:true},
+        {name:"Le stagiste", emoji:"👩‍🎓👩‍🎓", val:9, unit:"pt", group:true},
+      ],
+      winner:1,
+      options:[
+        "Le stagiste sono le migliori del gruppo.",
+        "Le stagiste sono i migliori del gruppo.",
+        "Le stagiste sono la migliore del gruppo.",
+        "Le stagiste sono le più buone del gruppo.",
+      ],
+      correct:0,
+      why:"Plurale femminile di «migliore» → <b>le migliori</b> (forma invariata al femminile, ma plurale in -i). «Le più buone» non è corretto: buono → migliore."
+    },
+    {
+      type:"complete",
+      icon:"🎬", label:"Congiuntivo", prompt:"Completa: È il film più interessante...",
+      scenario:"«È il film più interessante ___ quest'anno.»",
+      options:[
+        "...che io abbia visto.",
+        "...che io ho visto.",
+        "...che io vedessi.",
+        "...che io veda.",
+      ],
+      correct:0,
+      why:"Con un'azione già conclusa («quest'anno») dopo il superlativo relativo si usa il <b>congiuntivo passato</b>: «che io abbia visto», non il presente o l'imperfetto."
+    },
+    {
+      type:"complete",
+      icon:"😩", label:"Congiuntivo + irregolare", prompt:"Completa: Marco è il collega peggiore...",
+      scenario:"«Marco è il collega peggiore ___ mai avuto.»",
+      options:[
+        "...che io abbia mai avuto.",
+        "...che io ho mai avuto.",
+        "...che io abbia avuto mai.",
+        "...che io avessi mai avuto.",
+      ],
+      correct:0,
+      why:"Superlativo + congiuntivo passato: <b>che io abbia mai avuto</b>. «Mai» va prima del participio, non dopo; il trapassato congiuntivo qui non è corretto."
+    },
+  ];
+
+  const letters = ["A","B","C","D"];
+  let current = 0;
+  let score = 0;
+  let streak = 0;
+  const results = [];
+
+  const gameEl = document.getElementById("game");
+  const endEl = document.getElementById("endScreen");
+  const progressEl = document.getElementById("progress");
+  const scoreN = document.getElementById("scoreN");
+  const scoreTot = document.getElementById("scoreTot");
+  const streakEl = document.getElementById("streak");
+  const qNow = document.getElementById("qNow");
+  const qTotal = document.getElementById("qTotal");
+
+  scoreTot.textContent = ROUNDS.length;
+  qTotal.textContent = ROUNDS.length;
+
+  function buildProgress(){
+    progressEl.innerHTML = "";
+    ROUNDS.forEach((_, i) => {
+      const d = document.createElement("span");
+      d.className = "dot";
+      if (i === current) d.classList.add("current");
+      if (results[i] === true) d.classList.add("done-good");
+      if (results[i] === false) d.classList.add("done-bad");
+      progressEl.appendChild(d);
+    });
+  }
+
+  function maxVal(round){
+    return Math.max(...round.cast.map(c => c.val));
+  }
+
+  function render(){
+    if (current >= ROUNDS.length){
+      renderEnd();
+      return;
+    }
+    const r = ROUNDS[current];
+    qNow.textContent = current + 1;
+    buildProgress();
+
+    let middleHtml;
+    if (r.type === "complete"){
+      middleHtml = `<div class="scenario">${r.scenario}</div>`;
+    } else {
+      const top = maxVal(r);
+      const castHtml = r.cast.map((c, i) => {
+        const pct = Math.max(8, Math.round((c.val / top) * 100));
+        return `<div class="character" data-idx="${i}">
+          <div class="avatar">${c.emoji}</div>
+          <div class="name">${c.name}</div>
+          <div class="statval">${c.val} ${c.unit}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        </div>`;
+      }).join("");
+      middleHtml = `<div class="cast">${castHtml}</div>`;
+    }
+
+    const optsHtml = r.options.map((opt, i) => {
+      return `<button class="opt" data-idx="${i}">
+        <span class="letter">${letters[i]}</span>
+        <span>${opt}</span>
+      </button>`;
+    }).join("");
+
+    gameEl.innerHTML = `
+      <div class="category">
+        <div class="icon">${r.icon}</div>
+        <div>
+          <div class="label">${r.label}</div>
+          <div class="prompt">${r.prompt}</div>
+        </div>
+      </div>
+      ${middleHtml}
+      <div class="options" id="opts">${optsHtml}</div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <div class="nextbar">
+        <button class="btn" id="nextBtn" disabled>Avanti →</button>
+      </div>
+    `;
+
+    document.querySelectorAll(".opt").forEach(btn => {
+      btn.addEventListener("click", () => handleAnswer(r, parseInt(btn.dataset.idx, 10)));
+    });
+  }
+
+  function handleAnswer(round, idx){
+    const opts = document.querySelectorAll(".opt");
+    opts.forEach(o => o.disabled = true);
+
+    const correct = idx === round.correct;
+    results[current] = correct;
+
+    opts[round.correct].classList.add("correct");
+    if (!correct){
+      opts[idx].classList.add("wrong");
+    }
+    opts.forEach((o, i) => {
+      if (i !== round.correct && i !== idx) o.classList.add("dim");
+    });
+
+    // highlight winner card (only for "compare" rounds)
+    if (round.type !== "complete"){
+      document.querySelectorAll(".character").forEach((c, i) => {
+        if (i === round.winner) c.classList.add("winner");
+      });
+    }
+
+    if (correct){
+      score++;
+      streak++;
+    } else {
+      streak = 0;
+    }
+    scoreN.textContent = score;
+    streakEl.textContent = "serie: " + streak;
+
+    const fb = document.getElementById("feedback");
+    fb.classList.add("show", correct ? "good" : "bad");
+    fb.innerHTML = `<span class="stamp">${correct ? "Esatto! ✓" : "Quasi! ✗"}</span>${round.why}`;
+
+    document.getElementById("nextBtn").disabled = false;
+    document.getElementById("nextBtn").focus();
+    buildProgress();
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target && e.target.id === "nextBtn"){
+      current++;
+      render();
+    }
+  });
+
+  function renderEnd(){
+    gameEl.style.display = "none";
+    document.querySelector(".statusbar").style.display = "none";
+    endEl.style.display = "block";
+    const pct = score / ROUNDS.length;
+    let starCount = pct >= 0.9 ? 3 : pct >= 0.6 ? 2 : 1;
+    let stars = "★".repeat(starCount) + "☆".repeat(3 - starCount);
+    let msg;
+    if (pct >= 0.9) msg = "Ottimo lavoro! Conosci bene il superlativo relativo.";
+    else if (pct >= 0.6) msg = "Bravo/a! Un po' di pratica in più e sarà perfetto.";
+    else msg = "Continua ad allenarti: rivedi la regola qui sopra e riprova!";
+
+    endEl.innerHTML = `
+      <div class="end">
+        <div class="stars" style="color:var(--accent)">${stars}</div>
+        <h2>Pagella finale</h2>
+        <div class="tally"><span class="n">${score}</span> / ${ROUNDS.length} corrette</div>
+        <p>${msg}</p>
+        <button class="btn" id="retryBtn">Rigioca da capo</button>
+      </div>
+    `;
+    document.getElementById("retryBtn").addEventListener("click", () => {
+      current = 0; score = 0; streak = 0;
+      results.length = 0;
+      scoreN.textContent = 0;
+      streakEl.textContent = "serie: 0";
+      gameEl.style.display = "block";
+      document.querySelector(".statusbar").style.display = "flex";
+      endEl.style.display = "none";
+      render();
+    });
+  }
+
+  document.getElementById("ruleToggle").addEventListener("click", function(){
+    const box = document.getElementById("ruleBox");
+    const open = box.classList.toggle("open");
+    this.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+
+  render();
+})();
+</script>
